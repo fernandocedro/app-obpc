@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+        <meta name="color-scheme" content="light dark">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        <title>OBPC School - Dashboard Admin</title>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Anton&family=Boldonse&family=Funnel+Sans:ital,wght@0,300..800;1,300..800&family=Manrope:wght@200..800;1,200..800&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Unbounded:wght@200..900&display=swap');
+
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+                background-color: black;
+                color: white;
+                font-family: "Funnel Sans", sans-serif;
+                font-size: 1rem;
+            }
+            
+            /* -- Estilos da Tela de Login -- */
+            .auth-container {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+                background-color: black;
+                color: white;
+                padding: 20px;
+            }
+            .auth-card {
+                background-color: #06224A;
+                padding: 30px;
+                border-radius: 15px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+                width: 100%;
+                max-width: 400px;
+                color: #eee;
+                text-align: center;
+            }
+            .auth-card h2 {
+                color: #E25402;
+                font-size: 2rem;
+                margin-bottom: 20px;
+            }
+            .form-group {
+                margin-bottom: 20px;
+                text-align: left;
+            }
+            .form-group label {
+                display: block;
+                margin-bottom: 8px;
+                font-weight: 500;
+            }
+            .form-group input, .form-group textarea {
+                width: 100%;
+                padding: 12px;
+                border-radius: 8px;
+                border: 1px solid #E25402;
+                background-color: #333;
+                color: white;
+                font-size: 1rem;
+            }
+            .auth-button {
+                width: 100%;
+                padding: 12px;
+                border-radius: 8px;
+                background-color: #E25402;
+                color: white;
+                font-weight: bold;
+                border: none;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+                margin-top: 10px;
+            }
+            .auth-button:hover {
+                background-color: #d14a02;
+            }
+            .auth-message {
+                text-align: center;
+                margin-top: 10px;
+                font-size: 0.9rem;
+                color: #fca5a5;
+            }
+            .logo {
+                width: 250px;
+                height: auto;
+                margin-bottom: 20px;
+            }
+
+            /* -- Estilos do Layout Principal do Dashboard -- */
+            .dashboard-container {
+                display: flex;
+                min-height: 100vh;
+                flex-direction: column;
+            }
+
+            /* -- Estilos do Menu Lateral -- */
+            .sidebar {
+                width: 100%;
+                background-color: #06224A;
+                padding: 20px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                border-bottom: 1px solid #E25402;
+            }
+            .sidebar-logo {
+                width: 100%;
+                text-align: center;
+                margin-bottom: 30px;
+            }
+            .sidebar-logo img {
+                width: 150px;
+                height: auto;
+            }
+            .sidebar-menu {
+                list-style: none;
+                width: 100%;
+            }
+            .sidebar-menu li {
+                margin-bottom: 10px;
+            }
+            .sidebar-menu a {
+                display: flex;
+                align-items: center;
+                color: white;
+                text-decoration: none;
+                padding: 15px;
+                border-radius: 8px;
+                transition: background-color 0.3s ease;
+            }
+            .sidebar-menu a:hover {
+                background-color: #E25402;
+            }
+            .sidebar-menu a i {
+                margin-right: 10px;
+                color: #E25402;
+            }
+            .sidebar-menu a:hover i {
+                color: white;
+            }
+
+            /* -- Estilos da Área de Conteúdo Principal -- */
+            .main-content {
+                flex-grow: 1;
+                padding: 20px;
+            }
+            .content-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 30px;
+                border-bottom: 2px solid #333;
+                padding-bottom: 15px;
+            }
+            .content-header h1 {
+                font-size: 1.5rem;
+                color: #E25402;
+            }
+            .auth-button-header {
+                background-color: #E25402;
+                color: white;
+                border: none;
+                padding: 8px 16px;
+                border-radius: 8px;
+                cursor: pointer;
+                font-weight: bold;
+                transition: background-color 0.3s ease;
+            }
+            .auth-button-header:hover {
+                background-color: #d14a02;
+            }
+
+            /* -- Estilos do Formulário de Administração -- */
+            .admin-container {
+                padding: 20px;
+            }
+            .admin-card {
+                background-color: #06224A;
+                padding: 30px;
+                border-radius: 15px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+                width: 100%;
+                max-width: 600px;
+                color: #eee;
+                text-align: center;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .admin-card h2 {
+                color: #E25402;
+                font-size: 1.5rem;
+                margin-bottom: 20px;
+            }
+            .admin-button {
+                width: 100%;
+                padding: 12px;
+                border-radius: 8px;
+                background-color: #E25402;
+                color: white;
+                font-weight: bold;
+                border: none;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+                margin-top: 10px;
+            }
+            .admin-button:hover {
+                background-color: #d14a02;
+            }
+            .admin-message {
+                text-align: center;
+                margin-top: 10px;
+                font-size: 0.9rem;
+                color: #fca5a5;
+            }
+            #loading-message {
+                margin-top: 10px;
+                font-size: 0.9rem;
+                color: #E25402;
+                display: none;
+            }
+            #upload-loading-message {
+                margin-top: 10px;
+                font-size: 0.9rem;
+                color: #E25402;
+                display: none;
+            }
+
+            /* -- Estilos da Lista de Conteúdos -- */
+            .list-container {
+                margin-top: 40px;
+            }
+            .list-container h2 {
+                color: #E25402;
+                font-size: 1.5rem;
+                margin-bottom: 20px;
+            }
+            .content-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 20px;
+            }
+            .content-card {
+                background-color: #06224A;
+                border-radius: 15px;
+                overflow: hidden;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+                display: flex;
+                flex-direction: column;
+                transition: transform 0.3s ease;
+            }
+            .content-card:hover {
+                transform: translateY(-5px);
+            }
+            .content-card img {
+                width: 100%;
+                height: 180px;
+                object-fit: cover;
+            }
+            .content-card-content {
+                padding: 15px;
+                display: flex;
+                flex-direction: column;
+                flex-grow: 1;
+            }
+            .content-card-content h3 {
+                font-size: 1.2rem;
+                margin-bottom: 10px;
+            }
+            .content-card-content p {
+                font-size: 0.9rem;
+                color: #ddd;
+                flex-grow: 1;
+            }
+            .content-card-content .action-buttons {
+                display: flex;
+                gap: 10px;
+                margin-top: 15px;
+            }
+            .content-card-content a.button,
+            .content-card-content button.delete-button {
+                flex-grow: 1;
+                padding: 10px;
+                border-radius: 8px;
+                text-align: center;
+                transition: background-color 0.3s ease;
+                font-weight: bold;
+                border: none;
+                cursor: pointer;
+            }
+            .content-card-content a.button {
+                background-color: #E25402;
+                color: white;
+                text-decoration: none;
+            }
+            .content-card-content a.button:hover {
+                background-color: #d14a02;
+            }
+            .content-card-content button.delete-button {
+                background-color: #dc3545; /* Cor de exclusão */
+                color: white;
+            }
+            .content-card-content button.delete-button:hover {
+                background-color: #c82333;
+            }
+
+            /* Estilos para cards de eventos */
+            .event-card {
+                background-color: #06224A;
+                border-radius: 15px;
+                padding: 20px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+                text-align: left;
+            }
+            .event-card h3 {
+                color: #E25402;
+                margin-bottom: 10px;
+            }
+            .event-card p {
+                font-size: 1rem;
+                color: #ddd;
+            }
+            .event-card .action-buttons {
+                margin-top: 15px;
+            }
+
+            /* -- Media Queries para Responsividade -- */
+            @media (min-width: 768px) {
+                .dashboard-container {
+                    flex-direction: row;
+                }
+                .sidebar {
+                    width: 250px;
+                    border-right: 1px solid #E25402;
+                    border-bottom: none;
+                }
+                .main-content {
+                    padding: 40px;
+                }
+            }
+            
+            /* -- Estilos do Modal de Confirmação -- */
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 100;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                background-color: rgba(0,0,0,0.7);
+                justify-content: center;
+                align-items: center;
+            }
+            .modal-content {
+                background-color: #06224A;
+                padding: 20px;
+                border-radius: 10px;
+                width: 90%;
+                max-width: 400px;
+                text-align: center;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            }
+            .modal-content p {
+                margin-bottom: 20px;
+                font-size: 1.1rem;
+            }
+            .modal-buttons {
+                display: flex;
+                justify-content: center;
+                gap: 15px;
+            }
+            .modal-button {
+                padding: 10px 20px;
+                border-radius: 8px;
+                border: none;
+                cursor: pointer;
+                font-weight: bold;
+                transition: background-color 0.3s ease;
+            }
+            .modal-button.confirm {
+                background-color: #dc3545;
+                color: white;
+            }
+            .modal-button.confirm:hover {
+                background-color: #c82333;
+            }
+            .modal-button.cancel {
+                background-color: #6c757d;
+                color: white;
+            }
+            .modal-button.cancel:hover {
+                background-color: #5a6268;
+            }
+
+        </style>
+    </head>
+    <body>
+
+        <div id="login-screen-admin" class="auth-container">
+            <div class="auth-card">
+                <img class="logo" alt="Obpc School Logo" src="https://placehold.co/250x50/06224A/E25402?text=OBPC|SCHOOL">
+                <h2>Login do Administrador</h2>
+                <form id="login-form-admin">
+                    <div class="form-group">
+                        <label for="email-admin">Email</label>
+                        <input type="email" id="email-admin" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password-admin">Senha</label>
+                        <input type="password" id="password-admin" name="password" required>
+                    </div>
+                    <button type="submit" class="auth-button">
+                        Entrar
+                    </button>
+                    <div id="login-message-admin" class="auth-message"></div>
+                </form>
+            </div>
+        </div>
+
+        <div id="main-screen-admin" class="dashboard-container" style="display: none;">
+            <div class="sidebar">
+                <div class="sidebar-logo">
+                    <img src="https://placehold.co/150x50/06224A/E25402?text=OBPC|SCHOOL" alt="OBPC School Logo">
+                </div>
+                <ul class="sidebar-menu">
+                    <li><a href="#" id="add-class-link"><i class="fa-solid fa-circle-plus"></i> Adicionar Aulas</a></li>
+                    <li><a href="#" id="manage-content-link"><i class="fa-solid fa-list-check"></i> Gerenciar Aulas</a></li>
+                    <li><a href="#" id="image-upload-link"><i class="fa-solid fa-image"></i> Upload de Imagem</a></li>
+                    <li><a href="#" id="manage-images-link"><i class="fa-solid fa-images"></i> Gerenciar Material de Apoio</a></li>
+                    <li><a href="#" id="add-oferta-link"><i class="fa-solid fa-hand-holding-dollar"></i> Adicionar Ofertas</a></li>
+                    <li><a href="#" id="manage-ofertas-link"><i class="fa-solid fa-hand-holding-hand"></i> Gerenciar Ofertas</a></li>
+                    <li><a href="#" id="add-event-link"><i class="fa-solid fa-calendar-days"></i> Gerenciar Eventos</a></li>
+                    <li><a href="#" id="logout-button"><i class="fa-solid fa-right-from-bracket"></i> Sair</a></li>
+                </ul>
+            </div>
+
+            <div class="main-content">
+                <div class="content-header">
+                    <h1>Dashboard do Administrador</h1>
+                    <button id="logout-button-header" class="auth-button-header">Sair</button>
+                </div>
+
+                <div id="add-class-screen" class="admin-container" style="display: none;">
+                    <div class="admin-card">
+                        <h2>Adicionar Nova Aula</h2>
+                        <form id="admin-form">
+                            <div class="form-group">
+                                <label for="admin-video-url">URL do Vídeo</label>
+                                <input type="url" id="admin-video-url" name="admin-video-url" placeholder="https://..." required>
+                            </div>
+                            <div class="form-group">
+                                <label for="image-file">Imagem de Miniatura</label>
+                                <input type="file" id="image-file" name="image-file" accept="image/*" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="admin-text">Texto de Descrição</label>
+                                <textarea id="admin-text" name="admin-text" placeholder="Descrição do vídeo" rows="4" required></textarea>
+                            </div>
+                            <button type="submit" class="admin-button">Adicionar Aula</button>
+                            <div id="admin-message" class="admin-message"></div>
+                            <div id="loading-message">Carregando imagem...</div>
+                        </form>
+                    </div>
+                </div>
+
+                <div id="videos-list-screen" class="list-container" style="display: none;">
+                    <h2>Aulas Cadastradas</h2>
+                    <div id="videos-grid" class="content-grid">
+                    </div>
+                </div>
+
+                <div id="image-upload-screen" class="admin-container" style="display: none;">
+                    <div class="admin-card">
+                        <h2>Upload de Imagem e Texto</h2>
+                        <form id="image-upload-form">
+                            <div class="form-group">
+                                <label for="upload-image-file">Selecione a Imagem</label>
+                                <input type="file" id="upload-image-file" name="upload-image-file" accept="image/*" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="upload-image-text">Texto Abaixo da Imagem</label>
+                                <textarea id="upload-image-text" name="upload-image-text" placeholder="Digite o texto aqui..." rows="4" required></textarea>
+                            </div>
+                            <button type="submit" class="admin-button">Fazer Upload</button>
+                            <div id="upload-message" class="admin-message"></div>
+                            <div id="upload-loading-message" style="display: none;">Carregando...</div>
+                        </form>
+                    </div>
+                </div>
+
+                <div id="image-list-screen" class="list-container" style="display: none;">
+                    <h2>Material de Apoio Cadastrado</h2>
+                    <div id="images-grid" class="content-grid">
+                    </div>
+                </div>
+
+                <div id="add-oferta-screen" class="admin-container" style="display: none;">
+                    <div class="admin-card">
+                        <h2>Adicionar Nova Oferta ou Produto</h2>
+                        <form id="oferta-form">
+                            <div class="form-group">
+                                <label for="oferta-title">Título do Cartão</label>
+                                <input type="text" id="oferta-title" name="oferta-title" placeholder="Ex: Doação, Bíblias..." required>
+                            </div>
+                            <div class="form-group">
+                                <label for="oferta-image-file">Imagem para o Cartão</label>
+                                <input type="file" id="oferta-image-file" name="oferta-image-file" accept="image/*" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="oferta-text">Descrição</label>
+                                <textarea id="oferta-text" name="oferta-text" placeholder="Descreva a oferta ou o produto." rows="4" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="oferta-price">Valor (Opcional)</label>
+                                <input type="text" id="oferta-price" name="oferta-price" placeholder="Ex: 50,00 ou deixe em branco">
+                            </div>
+                            <div class="form-group">
+                                <label for="oferta-payment-link">Link de Pagamento (Opcional)</label>
+                                <input type="url" id="oferta-payment-link" name="oferta-payment-link" placeholder="Ex: https://pagseguro.com/link-doacao">
+                            </div>
+                            <button type="submit" class="admin-button">Cadastrar Cartão</button>
+                            <div id="oferta-message" class="admin-message"></div>
+                            <div id="oferta-loading-message" style="display: none;">Carregando...</div>
+                        </form>
+                    </div>
+                </div>
+
+                <div id="ofertas-list-screen" class="list-container" style="display: none;">
+                    <h2>Ofertas e Produtos Cadastrados</h2>
+                    <div id="ofertas-grid" class="content-grid">
+                    </div>
+                </div>
+
+                <div id="manage-events-screen" class="admin-container" style="display: none;">
+                    <div class="admin-card">
+                        <h2>Adicionar Novo Evento</h2>
+                        <form id="event-form">
+                            <div class="form-group">
+                                <label for="event-title">Título do Evento</label>
+                                <input type="text" id="event-title" name="event-title" placeholder="Ex: Culto de Jovens" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="event-date">Data</label>
+                                <input type="date" id="event-date" name="event-date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="event-time">Hora</label>
+                                <input type="time" id="event-time" name="event-time" required>
+                            </div>
+                            <button type="submit" class="admin-button">Adicionar Evento</button>
+                            <div id="event-message" class="admin-message"></div>
+                            <div id="event-loading-message" style="display: none;">Carregando...</div>
+                        </form>
+                    </div>
+                    
+                    <div class="list-container">
+                        <h2>Eventos Cadastrados</h2>
+                        <div id="events-grid" class="content-grid">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="confirmation-modal" class="modal">
+            <div class="modal-content">
+                <p>Tem certeza que deseja excluir este item?</p>
+                <div class="modal-buttons">
+                    <button id="confirm-delete-button" class="modal-button confirm">Excluir</button>
+                    <button id="cancel-delete-button" class="modal-button cancel">Cancelar</button>
+                </div>
+            </div>
+        </div>
+
+        <script type="module">
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+            import { getAuth, onAuthStateChanged, signOut, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+            import { getFirestore, collection, addDoc, serverTimestamp, onSnapshot, query, getDocs, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+            import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js";
+
+            window.addEventListener('DOMContentLoaded', () => {
+                // UI Elements
+                const loginScreen = document.getElementById('login-screen-admin');
+                const mainScreen = document.getElementById('main-screen-admin');
+                const loginForm = document.getElementById('login-form-admin');
+                const loginMessage = document.getElementById('login-message-admin');
+                
+                const adminForm = document.getElementById('admin-form');
+                const adminMessage = document.getElementById('admin-message');
+                const loadingMessage = document.getElementById('loading-message');
+                
+                const imageUploadForm = document.getElementById('image-upload-form');
+                const uploadMessage = document.getElementById('upload-message');
+                const uploadLoadingMessage = document.getElementById('upload-loading-message');
+                
+                const ofertaForm = document.getElementById('oferta-form');
+                const ofertaMessage = document.getElementById('oferta-message');
+                const ofertaLoadingMessage = document.getElementById('oferta-loading-message');
+                
+                // Novo formulário e elementos para eventos
+                const eventForm = document.getElementById('event-form');
+                const eventMessage = document.getElementById('event-message');
+                const eventLoadingMessage = document.getElementById('event-loading-message');
+
+                const logoutButtonSidebar = document.getElementById('logout-button');
+                const logoutButtonHeader = document.getElementById('logout-button-header');
+                
+                const addClassLink = document.getElementById('add-class-link');
+                const manageContentLink = document.getElementById('manage-content-link');
+                const imageUploadLink = document.getElementById('image-upload-link');
+                const manageImagesLink = document.getElementById('manage-images-link');
+                const addOfertaLink = document.getElementById('add-oferta-link');
+                const manageOfertasLink = document.getElementById('manage-ofertas-link');
+                const addEventLink = document.getElementById('add-event-link');
+                
+                const addClassScreen = document.getElementById('add-class-screen');
+                const videosListScreen = document.getElementById('videos-list-screen');
+                const imageUploadScreen = document.getElementById('image-upload-screen');
+                const imageListScreen = document.getElementById('image-list-screen');
+                const addOfertaScreen = document.getElementById('add-oferta-screen');
+                const ofertasListScreen = document.getElementById('ofertas-list-screen');
+                const manageEventsScreen = document.getElementById('manage-events-screen');
+
+                const videosGrid = document.getElementById('videos-grid');
+                const imagesGrid = document.getElementById('images-grid');
+                const ofertasGrid = document.getElementById('ofertas-grid');
+                const eventsGrid = document.getElementById('events-grid');
+
+                const confirmationModal = document.getElementById('confirmation-modal');
+                const confirmDeleteButton = document.getElementById('confirm-delete-button');
+                const cancelDeleteButton = document.getElementById('cancel-delete-button');
+                
+                let db, auth, storage;
+                let isFirebaseInitialized = false;
+                let itemToDelete; // Variable to store the item (class, image, or oferta) to be deleted
+
+                /**
+                 * Switches the visible screen in the admin dashboard.
+                 * @param {HTMLElement} screenToShow - The screen element to be shown.
+                 */
+                const showScreen = (screenToShow) => {
+                    const screens = [addClassScreen, videosListScreen, imageUploadScreen, imageListScreen, addOfertaScreen, ofertasListScreen, manageEventsScreen];
+                    screens.forEach(screen => {
+                        if (screen) {
+                            screen.style.display = 'none';
+                        }
+                    });
+                    if (screenToShow) {
+                        screenToShow.style.display = 'block';
+                    }
+                };
+                
+                const showLoginScreen = () => {
+                    loginScreen.style.display = 'flex';
+                    mainScreen.style.display = 'none';
+                };
+                
+                const showMainScreen = () => {
+                    loginScreen.style.display = 'none';
+                    mainScreen.style.display = 'flex';
+                    // Show the default screen upon login
+                    showScreen(addClassScreen);
+                };
+
+                const openConfirmationModal = (item, collectionName, storagePath) => {
+                    itemToDelete = { item, collectionName, storagePath };
+                    confirmationModal.style.display = 'flex';
+                };
+
+                const closeConfirmationModal = () => {
+                    itemToDelete = null;
+                    confirmationModal.style.display = 'none';
+                };
+
+                const deleteItem = async () => {
+                    if (!itemToDelete || !db) return;
+
+                    const { item, collectionName, storagePath } = itemToDelete;
+                    const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+
+                    try {
+                        const docRef = doc(db, `artifacts/${appId}/public/data/${collectionName}`, item.id);
+                        await deleteDoc(docRef);
+
+                        // Only try to delete from storage if a storage path exists
+                        if (storagePath && storage) {
+                            const imageRef = ref(storage, storagePath);
+                            await deleteObject(imageRef);
+                            console.log("Imagem excluída com sucesso!");
+                        }
+                        console.log("Documento excluído com sucesso!");
+                    } catch (error) {
+                        console.error("Erro ao excluir documento ou imagem:", error);
+                    } finally {
+                        closeConfirmationModal();
+                    }
+                };
+
+                // Event Listeners for sidebar navigation
+                addClassLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showScreen(addClassScreen);
+                });
+                manageContentLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showScreen(videosListScreen);
+                });
+                imageUploadLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showScreen(imageUploadScreen);
+                });
+                manageImagesLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showScreen(imageListScreen);
+                });
+                addOfertaLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showScreen(addOfertaScreen);
+                });
+                manageOfertasLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showScreen(ofertasListScreen);
+                });
+                addEventLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showScreen(manageEventsScreen);
+                });
+
+                // Logout functionality
+                if (logoutButtonSidebar) {
+                    logoutButtonSidebar.addEventListener('click', () => {
+                        signOut(auth).then(() => {
+                            showLoginScreen();
+                        }).catch((error) => {
+                            console.error("Erro ao deslogar:", error);
+                        });
+                    });
+                }
+                if (logoutButtonHeader) {
+                    logoutButtonHeader.addEventListener('click', () => {
+                        signOut(auth).then(() => {
+                            showLoginScreen();
+                        }).catch((error) => {
+                            console.error("Erro ao deslogar:", error);
+                        });
+                    });
+                }
+                
+                // Login Form Handling
+                if (loginForm) {
+                    loginForm.addEventListener('submit', async (e) => {
+                        e.preventDefault();
+                        const email = document.getElementById('email-admin').value;
+                        const password = document.getElementById('password-admin').value;
+                        loginMessage.textContent = "Autenticando...";
+                        loginMessage.style.color = '#fff';
+                        
+                        try {
+                            await signInWithEmailAndPassword(auth, email, password);
+                            loginMessage.textContent = "Login bem-sucedido!";
+                            loginMessage.style.color = '#86efac';
+                        } catch (error) {
+                            let errorMessage = "Erro de login. Verifique seu email e senha.";
+                            if (error.code === 'auth/invalid-email') {
+                                errorMessage = "O endereço de e-mail está mal formatado.";
+                            } else if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+                                errorMessage = "Email ou senha incorretos.";
+                            }
+                            loginMessage.textContent = errorMessage;
+                            loginMessage.style.color = '#fca5a5';
+                        }
+                    });
+                }
+
+                // Add Class Form Handling
+                if (adminForm) {
+                    adminForm.addEventListener('submit', async (e) => {
+                        e.preventDefault();
+                        loadingMessage.style.display = 'block';
+                        adminMessage.textContent = '';
+                        
+                        const videoUrl = document.getElementById('admin-video-url').value;
+                        const imageFile = document.getElementById('image-file').files[0];
+                        const text = document.getElementById('admin-text').value;
+
+                        try {
+                            const storageRef = ref(storage, `videos_thumbnails/${Date.now()}-${imageFile.name}`);
+                            const snapshot = await uploadBytes(storageRef, imageFile);
+                            const imageUrl = await getDownloadURL(snapshot.ref);
+                            const imagePath = storageRef.fullPath;
+
+                            const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+                            addDoc(collection(db, `artifacts/${appId}/public/data/eventos`), {
+                            title: eventTitle.value,
+                            date: eventDate.value,
+                            time: eventTime.value
+                        });
+
+                            adminMessage.textContent = 'Aula adicionada com sucesso!';
+                            adminMessage.style.color = "lightgreen";
+                            adminForm.reset();
+
+                        } catch (error) {
+                            console.error("Erro ao adicionar aula:", error);
+                            adminMessage.textContent = `Erro: ${error.message}`;
+                            adminMessage.style.color = "red";
+                        } finally {
+                            loadingMessage.style.display = 'none';
+                        }
+                    });
+                }
+
+                // Image Upload Form Handling
+                if (imageUploadForm) {
+                    imageUploadForm.addEventListener('submit', async (e) => {
+                        e.preventDefault();
+                        uploadLoadingMessage.style.display = 'block';
+                        uploadMessage.textContent = '';
+
+                        const imageFile = document.getElementById('upload-image-file').files[0];
+                        const text = document.getElementById('upload-image-text').value;
+
+                        try {
+                            const storageRef = ref(storage, `material_apoio/${Date.now()}-${imageFile.name}`);
+                            const snapshot = await uploadBytes(storageRef, imageFile);
+                            const imageUrl = await getDownloadURL(snapshot.ref);
+                            const imagePath = storageRef.fullPath;
+
+                            const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+                            await addDoc(collection(db, `artifacts/${appId}/public/data/images`), {
+                                imageUrl,
+                                text,
+                                imagePath,
+                                createdAt: serverTimestamp()
+                            });
+
+                            uploadMessage.textContent = 'Imagem e texto enviados com sucesso!';
+                            uploadMessage.style.color = "lightgreen";
+                            imageUploadForm.reset();
+                        } catch (error) {
+                            console.error("Erro ao fazer upload:", error);
+                            uploadMessage.textContent = `Erro: ${error.message}`;
+                            uploadMessage.style.color = "red";
+                        } finally {
+                            uploadLoadingMessage.style.display = 'none';
+                        }
+                    });
+                }
+                
+                // NEW: Oferta Form Handling
+                if (ofertaForm) {
+                    ofertaForm.addEventListener('submit', async (e) => {
+                        e.preventDefault();
+                        ofertaLoadingMessage.style.display = 'block';
+                        ofertaMessage.textContent = '';
+
+                        const title = document.getElementById('oferta-title').value;
+                        const imageFile = document.getElementById('oferta-image-file').files[0];
+                        const text = document.getElementById('oferta-text').value;
+                        const price = document.getElementById('oferta-price').value;
+                        const paymentLink = document.getElementById('oferta-payment-link').value;
+
+                        try {
+                            const storageRef = ref(storage, `ofertas/${Date.now()}-${imageFile.name}`);
+                            const snapshot = await uploadBytes(storageRef, imageFile);
+                            const imageUrl = await getDownloadURL(snapshot.ref);
+                            const imagePath = storageRef.fullPath;
+
+                            const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+                            await addDoc(collection(db, `artifacts/${appId}/public/data/ofertas`), {
+                                title,
+                                imageUrl,
+                                text,
+                                price,
+                                paymentLink,
+                                imagePath,
+                                createdAt: serverTimestamp()
+                            });
+
+                            ofertaMessage.textContent = 'Oferta cadastrada com sucesso!';
+                            ofertaMessage.style.color = "lightgreen";
+                            ofertaForm.reset();
+                        } catch (error) {
+                            console.error("Erro ao cadastrar oferta:", error);
+                            ofertaMessage.textContent = `Erro: ${error.message}`;
+                            ofertaMessage.style.color = "red";
+                        } finally {
+                            ofertaLoadingMessage.style.display = 'none';
+                        }
+                    });
+                }
+                
+                // NOVO: Event Form Handling
+                if (eventForm) {
+                    eventForm.addEventListener('submit', async (e) => {
+                        e.preventDefault();
+                        eventLoadingMessage.style.display = 'block';
+                        eventMessage.textContent = '';
+
+                        const title = document.getElementById('event-title').value;
+                        const date = document.getElementById('event-date').value;
+                        const time = document.getElementById('event-time').value;
+
+                        try {
+                            const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+                            await addDoc(collection(db, `artifacts/${appId}/public/data/eventos`), {
+                                title,
+                                date,
+                                time,
+                                createdAt: serverTimestamp()
+                            });
+
+                            eventMessage.textContent = 'Evento adicionado com sucesso!';
+                            eventMessage.style.color = "lightgreen";
+                            eventForm.reset();
+                        } catch (error) {
+                            console.error("Erro ao adicionar evento:", error);
+                            eventMessage.textContent = `Erro: ${error.message}`;
+                            eventMessage.style.color = "red";
+                        } finally {
+                            eventLoadingMessage.style.display = 'none';
+                        }
+                    });
+                }
+
+                // Render functions for displaying content
+                const renderVideos = (docs) => {
+                    videosGrid.innerHTML = '';
+                    if (docs.length === 0) {
+                        videosGrid.innerHTML = '<div class="no-content-message">Nenhuma aula cadastrada.</div>';
+                        return;
+                    }
+                    docs.forEach(doc => {
+                        const data = doc.data();
+                        const card = document.createElement('div');
+                        card.classList.add('content-card');
+                        card.innerHTML = `
+                            <img src="${data.imageUrl}" alt="${data.text}">
+                            <div class="content-card-content">
+                                <h3>${data.text}</h3>
+                                <div class="action-buttons">
+                                    <button class="delete-button" data-id="${doc.id}" data-path="${data.imagePath}" data-collection="aulas">Excluir</button>
+                                </div>
+                            </div>
+                        `;
+                        videosGrid.appendChild(card);
+                    });
+                };
+
+                const renderImages = (docs) => {
+                    imagesGrid.innerHTML = '';
+                    if (docs.length === 0) {
+                        imagesGrid.innerHTML = '<div class="no-content-message">Nenhum material de apoio cadastrado.</div>';
+                        return;
+                    }
+                    docs.forEach(doc => {
+                        const data = doc.data();
+                        const card = document.createElement('div');
+                        card.classList.add('content-card');
+                        card.innerHTML = `
+                            <img src="${data.imageUrl}" alt="${data.text}">
+                            <div class="content-card-content">
+                                <h3>${data.text}</h3>
+                                <div class="action-buttons">
+                                    <button class="delete-button" data-id="${doc.id}" data-path="${data.imagePath}" data-collection="images">Excluir</button>
+                                </div>
+                            </div>
+                        `;
+                        imagesGrid.appendChild(card);
+                    });
+                };
+                
+                // NEW: Render function for displaying Ofertas
+                const renderOfertas = (docs) => {
+                    ofertasGrid.innerHTML = '';
+                    if (docs.length === 0) {
+                        ofertasGrid.innerHTML = '<div class="no-content-message">Nenhuma oferta cadastrada.</div>';
+                        return;
+                    }
+                    docs.forEach(doc => {
+                        const data = doc.data();
+                        const card = document.createElement('div');
+                        card.classList.add('content-card');
+                        card.innerHTML = `
+                            <img src="${data.imageUrl}" alt="${data.title}">
+                            <div class="content-card-content">
+                                <h3>${data.title}</h3>
+                                <p>${data.text}</p>
+                                <p>Valor: ${data.price || 'Não especificado'}</p>
+                                <div class="action-buttons">
+                                    <a href="${data.paymentLink || '#'}" target="_blank" class="button" style="background-color: #28a745; color: white; text-decoration: none;">Pagar</a>
+                                    <button class="delete-button" data-id="${doc.id}" data-path="${data.imagePath}" data-collection="ofertas">Excluir</button>
+                                </div>
+                            </div>
+                        `;
+                        ofertasGrid.appendChild(card);
+                    });
+                };
+                
+                // NOVO: Render function for displaying Events
+                const renderEvents = (docs) => {
+                    eventsGrid.innerHTML = '';
+                    if (docs.length === 0) {
+                        eventsGrid.innerHTML = '<div class="no-content-message">Nenhum evento cadastrado.</div>';
+                        return;
+                    }
+                    docs.forEach(doc => {
+                        const data = doc.data();
+                        const card = document.createElement('div');
+                        card.classList.add('event-card');
+                        card.innerHTML = `
+                            <h3>${data.title}</h3>
+                            <p>Data: ${data.date}</p>
+                            <p>Hora: ${data.time}</p>
+                            <div class="action-buttons">
+                                <button class="delete-button" data-id="${doc.id}" data-collection="eventos">Excluir</button>
+                            </div>
+                        `;
+                        eventsGrid.appendChild(card);
+                    });
+                };
+
+
+                // Listeners for data changes in Firestore
+                const setupFirestoreListeners = (appId) => {
+                    if (!db) return;
+
+                    // Listen to 'aulas' collection
+                    onSnapshot(query(collection(db, `artifacts/${appId}/public/data/aulas`)), (querySnapshot) => {
+                        const docs = [];
+                        querySnapshot.forEach(doc => docs.push(doc));
+                        renderVideos(docs);
+                    }, (error) => {
+                        console.error("Error fetching aulas:", error);
+                        videosGrid.innerHTML = '<p class="error-message">Erro ao carregar as aulas.</p>';
+                    });
+
+                    // Listen to 'images' collection
+                    onSnapshot(query(collection(db, `artifacts/${appId}/public/data/images`)), (querySnapshot) => {
+                        const docs = [];
+                        querySnapshot.forEach(doc => docs.push(doc));
+                        renderImages(docs);
+                    }, (error) => {
+                        console.error("Error fetching images:", error);
+                        imagesGrid.innerHTML = '<p class="error-message">Erro ao carregar as imagens.</p>';
+                    });
+                    
+                    // NEW: Listen to 'ofertas' collection
+                    onSnapshot(query(collection(db, `artifacts/${appId}/public/data/ofertas`)), (querySnapshot) => {
+                        const docs = [];
+                        querySnapshot.forEach(doc => docs.push(doc));
+                        renderOfertas(docs);
+                    }, (error) => {
+                        console.error("Error fetching ofertas:", error);
+                        ofertasGrid.innerHTML = '<p class="error-message">Erro ao carregar as ofertas.</p>';
+                    });
+
+                    // NOVO: Listen to 'eventos' collection
+                    onSnapshot(query(collection(db, `artifacts/${appId}/public/data/eventos`)), (querySnapshot) => {
+                        const docs = [];
+                        querySnapshot.forEach(doc => docs.push(doc));
+                        renderEvents(docs);
+                    }, (error) => {
+                        console.error("Erro ao carregar eventos:", error);
+                        eventsGrid.innerHTML = '<p class="error-message">Erro ao carregar os eventos.</p>';
+                    });
+                };
+                
+                // Add click listener to the grids for delete buttons
+                document.addEventListener('click', (e) => {
+                    if (e.target && e.target.classList.contains('delete-button')) {
+                        const itemId = e.target.getAttribute('data-id');
+                        const itemPath = e.target.getAttribute('data-path');
+                        const collectionName = e.target.getAttribute('data-collection');
+                        openConfirmationModal({ id: itemId, path: itemPath }, collectionName, itemPath);
+                    }
+                });
+                
+                // Add click listeners to modal buttons
+                confirmDeleteButton.addEventListener('click', deleteItem);
+                cancelDeleteButton.addEventListener('click', closeConfirmationModal);
+
+
+                const setupFirebase = () => {
+                    if (isFirebaseInitialized) return;
+
+                    try {
+                        let firebaseConfig;
+                        if (typeof __firebase_config !== 'undefined' && typeof __app_id !== 'undefined') {
+                            firebaseConfig = JSON.parse(__firebase_config);
+                        } else {
+                            firebaseConfig = {
+                                apiKey: "AIzaSyArteycUkaN5-dClQ28oHSl-NoiL-s4NaY",
+                                authDomain: "app-obpc-49823.firebaseapp.com",
+                                projectId: "app-obpc-49823",
+                                storageBucket: "app-obpc-49823.firebasestorage.app",
+                                messagingSenderId: "690083146419",
+                                appId: "1:690083146419:web:c03301f1aca7dd2d299ec6",
+                                measurementId: "G-KJPSSSC575"
+                            };
+                        }
+                        
+                        const app = initializeApp(firebaseConfig);
+                        auth = getAuth(app);
+                        db = getFirestore(app);
+                        storage = getStorage(app);
+                        isFirebaseInitialized = true;
+                        
+                        onAuthStateChanged(auth, async (user) => {
+                            if (user) {
+                                console.log("Usuário autenticado:", user.uid);
+                                showMainScreen();
+                                const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+                                setupFirestoreListeners(appId);
+                            } else {
+                                console.log("Usuário não autenticado.");
+                                showLoginScreen();
+                            }
+                        });
+
+                    } catch (e) {
+                        console.error("Falha ao inicializar o Firebase. Verifique sua configuração.", e);
+                        loginMessage.textContent = 'Erro: O aplicativo não pode se conectar aos serviços do Firebase.';
+                        loginMessage.style.color = 'yellow';
+                    }
+                };
+
+                setupFirebase();
+            });
+        </script>
+    </body>
+</html>
